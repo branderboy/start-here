@@ -659,6 +659,12 @@ textarea {
   border-color: var(--text-muted);
 }
 
+/* ===== Validation Highlight ===== */
+.invalid-card {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
 /* ===== Loading State ===== */
 .btn-submit.loading {
   pointer-events: none;
