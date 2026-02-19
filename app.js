@@ -240,255 +240,310 @@
     return res.ok;
   }
 
-  // ---- Generate Translation (Technical & Marketing Terms) ----
+  // ---- Generate Translation (Internal Brief) ----
   function generateTranslation(data) {
-    const sections = [];
+    const brief = {};
+    const all = (data.oneSentence + ' ' + data.problem + ' ' + data.success + ' ' + data.scopeDescription).toLowerCase();
 
-    // --- Translate the project objective ---
-    const objective = data.oneSentence.toLowerCase();
-    const techGoals = [];
-    const marketingGoals = [];
+    // --- 1. Executive Summary ---
+    const summaryParts = [];
+    summaryParts.push(data.companyName + ' needs a');
+    const scopeNames = data.scope.filter(s => s !== 'Other');
+    if (scopeNames.length > 0) {
+      summaryParts.push(scopeNames.join(' + ').toLowerCase());
+    } else {
+      summaryParts.push('custom solution');
+    }
+    summaryParts.push('that solves: "' + data.problem.split(/[.!?\n]/)[0].trim() + '"');
+    if (data.deadline) {
+      summaryParts.push('— deadline-driven (' + data.deadline + ')');
+    }
+    brief.executiveSummary = summaryParts.join(' ') + '.';
 
-    // Keyword-based mapping for objectives
-    if (/lead|capture|convert|visitor|form/.test(objective)) {
-      techGoals.push('Conversion-optimized lead capture funnel with form validation and CRM integration');
-      marketingGoals.push('Top-of-funnel acquisition asset with lead magnet and nurture sequence');
-    }
-    if (/automat|workflow|trigger|sequence/.test(objective)) {
-      techGoals.push('Event-driven automation pipeline with conditional branching and webhook triggers');
-      marketingGoals.push('Lifecycle marketing automation with behavioral triggers and drip campaigns');
-    }
-    if (/dashboard|report|metric|analytic|track/.test(objective)) {
-      techGoals.push('Real-time data visualization layer with aggregation queries and KPI widgets');
-      marketingGoals.push('Performance reporting dashboard with attribution modeling and ROI tracking');
-    }
-    if (/website|landing|page|site/.test(objective)) {
-      techGoals.push('Responsive, SEO-optimized web application with server-side rendering');
-      marketingGoals.push('High-converting landing experience with A/B test-ready layout and CTA strategy');
-    }
-    if (/email|newsletter|campaign|drip/.test(objective)) {
-      techGoals.push('Transactional and marketing email system with template engine and send scheduling');
-      marketingGoals.push('Email marketing program with segmentation, personalization, and engagement scoring');
-    }
-    if (/crm|pipeline|sales|deal/.test(objective)) {
-      techGoals.push('CRM data model with pipeline stages, contact records, and activity logging');
-      marketingGoals.push('Sales enablement platform with lead scoring and pipeline velocity optimization');
-    }
-    if (/app|tool|internal|system/.test(objective)) {
-      techGoals.push('Custom web application with role-based access control and CRUD operations');
-      marketingGoals.push('Internal productivity tool to streamline operations and reduce manual overhead');
-    }
-    if (/booking|schedule|call|appointment/.test(objective)) {
-      techGoals.push('Calendar integration with availability sync, booking API, and confirmation webhooks');
-      marketingGoals.push('Appointment funnel with friction-reduction UX and automated follow-up');
-    }
-    if (techGoals.length === 0) {
-      techGoals.push('Custom digital solution with API integrations and data persistence');
-      marketingGoals.push('Strategic digital asset aligned with business growth objectives');
-    }
+    // --- 2. Technical Requirements ---
+    const techReqs = [];
 
-    sections.push({
-      title: 'Project Objective',
-      clientSaid: data.oneSentence,
-      technical: techGoals.join('. '),
-      marketing: marketingGoals.join('. ')
-    });
-
-    // --- Translate the problem statement ---
-    const problem = data.problem.toLowerCase();
-    const techProblem = [];
-    const mktProblem = [];
-
-    if (/manual|time|slow|tedious|repetitive/.test(problem)) {
-      techProblem.push('Manual processes lacking automation, causing operational bottlenecks');
-      mktProblem.push('Revenue leakage from inefficient workflows and delayed response times');
-    }
-    if (/lead|miss|losing|follow.?up|no.?system/.test(problem)) {
-      techProblem.push('No structured data pipeline for lead intake, routing, and status tracking');
-      mktProblem.push('Broken acquisition funnel with high drop-off and no attribution visibility');
-    }
-    if (/data|track|measure|report|insight|visib/.test(problem)) {
-      techProblem.push('Fragmented data sources with no unified query layer or reporting interface');
-      mktProblem.push('Lack of actionable performance insights, preventing data-driven optimization');
-    }
-    if (/design|look|brand|outdated|ugly|trust/.test(problem)) {
-      techProblem.push('Front-end UI/UX does not meet modern responsive design standards');
-      mktProblem.push('Brand perception gap eroding trust and lowering conversion rates');
-    }
-    if (/scale|grow|volume|capacity/.test(problem)) {
-      techProblem.push('Current architecture has scalability constraints under increased load');
-      mktProblem.push('Growth ceiling caused by infrastructure that can\'t support demand');
-    }
-    if (techProblem.length === 0) {
-      techProblem.push('Existing systems do not meet current operational requirements');
-      mktProblem.push('Business performance constrained by tooling gaps');
-    }
-
-    sections.push({
-      title: 'Problem Statement',
-      clientSaid: data.problem,
-      technical: techProblem.join('. '),
-      marketing: mktProblem.join('. ')
-    });
-
-    // --- Translate success criteria ---
-    const success = data.success.toLowerCase();
-    const techSuccess = [];
-    const mktSuccess = [];
-
-    if (/lead|qualified|booked|call|demo/.test(success)) {
-      techSuccess.push('Measurable lead conversion rate with form-to-CRM pipeline completion');
-      mktSuccess.push('Qualified lead volume target with cost-per-acquisition benchmarks');
-    }
-    if (/automat|save time|hands.?off|run itself/.test(success)) {
-      techSuccess.push('Zero-touch execution of defined workflows with error handling and logging');
-      mktSuccess.push('Operational efficiency gains measured in hours saved per week');
-    }
-    if (/revenue|sales|roi|money|profit/.test(success)) {
-      techSuccess.push('Conversion tracking with revenue attribution across touchpoints');
-      mktSuccess.push('Positive ROI with measurable revenue lift tied to campaign performance');
-    }
-    if (/email|open|click|engag|subscriber/.test(success)) {
-      techSuccess.push('Email delivery and engagement metrics (open rate, CTR, bounce rate)');
-      mktSuccess.push('Email program KPIs: list growth, engagement rate, and revenue per send');
-    }
-    if (techSuccess.length === 0) {
-      techSuccess.push('Defined acceptance criteria met with measurable performance benchmarks');
-      mktSuccess.push('Clear business outcomes with trackable success metrics');
-    }
-
-    sections.push({
-      title: 'Success Criteria',
-      clientSaid: data.success,
-      technical: techSuccess.join('. '),
-      marketing: mktSuccess.join('. ')
-    });
-
-    // --- Translate scope items ---
-    const scopeMap = {
-      'Website / Landing Page': {
-        technical: 'Responsive front-end application (HTML/CSS/JS or framework-based) with SEO metadata, structured data, and performance optimization (Core Web Vitals)',
-        marketing: 'Conversion-focused landing experience with persuasive copy hierarchy, social proof placement, and CTA optimization'
-      },
-      'Automation / Workflow': {
-        technical: 'Event-driven automation engine with conditional logic, API integrations, webhook listeners, and error retry mechanisms',
-        marketing: 'Marketing and sales automation reducing manual touchpoints and accelerating speed-to-lead'
-      },
-      'CRM Setup': {
-        technical: 'Relational data model with contact/company/deal entities, custom fields, pipeline stages, and API sync',
-        marketing: 'Customer relationship management platform enabling segmentation, lead scoring, and lifecycle tracking'
-      },
-      'Dashboard / Reporting': {
-        technical: 'Data visualization layer with aggregation queries, chart rendering, date-range filtering, and export capabilities',
-        marketing: 'Executive-level performance dashboard with KPIs, trend analysis, and ROI attribution'
-      },
-      'Lead Generation System': {
-        technical: 'Multi-step form with progressive profiling, spam filtering, validation, and CRM/notification integration',
-        marketing: 'Full-funnel lead gen engine: traffic capture, qualification, nurture sequence, and sales handoff'
-      },
-      'Email Marketing Setup': {
-        technical: 'Email service provider integration with template system, list management, segmentation rules, and send scheduling',
-        marketing: 'Email marketing program with welcome series, re-engagement campaigns, and revenue-per-subscriber optimization'
-      },
-      'Internal Tool / App': {
-        technical: 'Custom CRUD application with authentication, role-based access control, and database persistence',
-        marketing: 'Internal productivity tool reducing operational friction and enabling team-wide efficiency gains'
-      }
+    // From scope
+    const scopeTechMap = {
+      'Website / Landing Page': [
+        'Responsive front-end (mobile-first, Core Web Vitals compliant)',
+        'SEO infrastructure: meta tags, Open Graph, structured data, sitemap',
+        'Form handling with client-side validation and server submission',
+        'Analytics integration (GA4/GTM event tracking)'
+      ],
+      'Automation / Workflow': [
+        'Event-driven automation engine (webhook triggers, conditional branching)',
+        'API integrations between systems (REST/webhook connectors)',
+        'Error handling with retry logic and failure notifications',
+        'Execution logging and audit trail'
+      ],
+      'CRM Setup': [
+        'Data model: contacts, companies, deals with custom properties',
+        'Pipeline configuration with stage-based automation',
+        'Import/migration of existing data (deduplication, field mapping)',
+        'API sync with external systems'
+      ],
+      'Dashboard / Reporting': [
+        'Data aggregation layer pulling from connected sources',
+        'Chart/widget rendering with date-range filtering',
+        'Export functionality (CSV/PDF)',
+        'Role-based access to reports'
+      ],
+      'Lead Generation System': [
+        'Multi-step or progressive form with field validation',
+        'Spam/bot protection (honeypot, reCAPTCHA)',
+        'Lead routing: CRM insert + team notification (email/Slack)',
+        'UTM parameter capture for source attribution'
+      ],
+      'Email Marketing Setup': [
+        'ESP integration with list management and segmentation',
+        'Template system (responsive, brand-consistent)',
+        'Automation sequences: welcome, nurture, re-engagement',
+        'Deliverability setup: SPF, DKIM, DMARC'
+      ],
+      'Internal Tool / App': [
+        'Authentication and role-based access control',
+        'CRUD interface with data validation',
+        'Database persistence (relational or document store)',
+        'Deployment pipeline with staging environment'
+      ]
     };
 
-    const scopeTech = [];
-    const scopeMkt = [];
     data.scope.forEach(s => {
-      if (scopeMap[s]) {
-        scopeTech.push(s + ': ' + scopeMap[s].technical);
-        scopeMkt.push(s + ': ' + scopeMap[s].marketing);
+      if (scopeTechMap[s]) {
+        techReqs.push({ category: s, items: scopeTechMap[s] });
       }
     });
     if (data.scopeOther) {
-      scopeTech.push(data.scopeOther + ': Custom implementation per requirements');
-      scopeMkt.push(data.scopeOther + ': Tailored solution addressing specific business need');
+      techReqs.push({ category: data.scopeOther, items: ['Custom implementation — define spec during discovery'] });
     }
 
-    sections.push({
-      title: 'Scope of Work',
-      clientSaid: data.scope.join(', ') + (data.scopeOther ? ', ' + data.scopeOther : ''),
-      technical: scopeTech.join('\n'),
-      marketing: scopeMkt.join('\n')
-    });
+    // From functional description
+    const funcReqs = [];
+    if (data.scopeDescription) funcReqs.push(data.scopeDescription);
+    if (data.exclusions) funcReqs.push('EXCLUSIONS: ' + data.exclusions);
 
-    // --- Translate priorities ---
-    const prioMap = {
-      'Speed': {
-        technical: 'Optimized load times (sub-2s TTFB), lazy loading, CDN delivery, and rapid deployment pipeline',
-        marketing: 'Fast time-to-market with agile delivery sprints and accelerated launch timeline'
-      },
-      'Clean Design': {
-        technical: 'Component-based UI architecture with design system tokens, accessibility (WCAG 2.1), and responsive breakpoints',
-        marketing: 'Premium brand experience with modern aesthetics that builds trust and drives engagement'
-      },
-      'Automation Efficiency': {
-        technical: 'Optimized workflow execution with minimal latency, parallel processing, and idempotent operations',
-        marketing: 'Maximum operational leverage — do more with less through intelligent automation'
-      },
-      'Scalability': {
-        technical: 'Horizontally scalable architecture with stateless services, caching layers, and load balancing',
-        marketing: 'Growth-ready infrastructure that scales with demand without rebuilding from scratch'
-      },
-      'Lead Quality': {
-        technical: 'Multi-field qualification logic, lead scoring algorithms, and spam/bot filtering',
-        marketing: 'Higher-intent pipeline with qualification gates that filter out tire-kickers before sales engagement'
-      }
-    };
+    brief.techReqs = techReqs;
+    brief.funcReqs = funcReqs;
 
-    const prioTech = [];
-    const prioMkt = [];
-    data.priority.forEach(p => {
-      if (prioMap[p]) {
-        prioTech.push(p + ': ' + prioMap[p].technical);
-        prioMkt.push(p + ': ' + prioMap[p].marketing);
-      }
-    });
-    if (data.priorityOther) {
-      prioTech.push(data.priorityOther + ': Custom priority — will define technical spec during discovery');
-      prioMkt.push(data.priorityOther + ': Strategic priority aligned to core business KPIs');
+    // --- 3. Marketing Strategy Brief ---
+    const mktBrief = [];
+
+    // Position
+    if (/lead|capture|convert|funnel|visitor/.test(all)) {
+      mktBrief.push({ label: 'Funnel Type', value: 'Lead acquisition funnel — capture, qualify, nurture, hand off to sales' });
+    }
+    if (/email|newsletter|drip|campaign|sequence/.test(all)) {
+      mktBrief.push({ label: 'Channel', value: 'Email marketing — lifecycle sequences with behavioral triggers' });
+    }
+    if (/brand|trust|credib|design|look|modern/.test(all)) {
+      mktBrief.push({ label: 'Brand Play', value: 'Brand trust and credibility — design-led approach to build authority' });
+    }
+    if (/automat|effic|save time|manual/.test(all)) {
+      mktBrief.push({ label: 'Value Prop', value: 'Operational efficiency — "do more with less" through automation' });
+    }
+    if (/revenue|sales|roi|profit|money|growth/.test(all)) {
+      mktBrief.push({ label: 'KPI Focus', value: 'Revenue attribution — tie every touchpoint back to dollars generated' });
+    }
+    if (/data|report|dashboard|insight|metric|track/.test(all)) {
+      mktBrief.push({ label: 'Intelligence', value: 'Data-driven decision making — real-time visibility into what\'s working' });
+    }
+    if (/booking|schedule|call|appointment|demo/.test(all)) {
+      mktBrief.push({ label: 'Conversion Goal', value: 'Appointment setting — reduce friction from interest to booked call' });
     }
 
-    sections.push({
-      title: 'Priorities',
-      clientSaid: data.priority.join(', ') + (data.priorityOther ? ', ' + data.priorityOther : ''),
-      technical: prioTech.join('\n'),
-      marketing: prioMkt.join('\n')
+    // Audience / positioning from problem
+    if (data.problem) {
+      const painPoint = data.problem.split(/[.!?\n]/)[0].trim();
+      mktBrief.push({ label: 'Client Pain Point', value: '"' + painPoint + '" — use this as the anchor for all messaging' });
+    }
+    if (data.success) {
+      const winState = data.success.split(/[.!?\n]/)[0].trim();
+      mktBrief.push({ label: 'Win State', value: '"' + winState + '" — this is what done looks like in their words' });
+    }
+
+    brief.mktBrief = mktBrief;
+
+    // --- 4. Recommended Stack & Tools ---
+    const stack = [];
+
+    if (data.scope.includes('Website / Landing Page')) {
+      stack.push({ tool: 'Webflow / WordPress / Custom HTML', reason: 'Landing page build — choose based on client\'s technical comfort and update frequency' });
+      stack.push({ tool: 'Google Analytics 4 + Tag Manager', reason: 'Event tracking, conversion goals, UTM attribution' });
+    }
+    if (data.scope.includes('CRM Setup')) {
+      stack.push({ tool: 'HubSpot / GoHighLevel / Pipedrive', reason: 'CRM with pipeline management — pick based on budget and feature needs' });
+    }
+    if (data.scope.includes('Automation / Workflow')) {
+      stack.push({ tool: 'Zapier / Make / n8n', reason: 'Cross-platform automation orchestration with conditional logic' });
+    }
+    if (data.scope.includes('Dashboard / Reporting')) {
+      stack.push({ tool: 'Google Looker Studio / Databox / Custom', reason: 'Data visualization and KPI dashboards' });
+    }
+    if (data.scope.includes('Lead Generation System')) {
+      stack.push({ tool: 'Typeform / HubSpot Forms / Custom', reason: 'Lead capture with progressive profiling and validation' });
+      stack.push({ tool: 'Calendly / Cal.com', reason: 'Appointment scheduling if lead-to-call flow is needed' });
+    }
+    if (data.scope.includes('Email Marketing Setup')) {
+      stack.push({ tool: 'Mailchimp / ActiveCampaign / ConvertKit', reason: 'Email automation with segmentation and analytics' });
+    }
+    if (data.scope.includes('Internal Tool / App')) {
+      stack.push({ tool: 'Retool / Bubble / Custom (React/Node)', reason: 'Internal app — low-code if speed matters, custom if flexibility matters' });
+    }
+
+    // From tool access field
+    if (data.toolAccess) {
+      stack.push({ tool: data.toolAccess, reason: 'Client-specified — already has access, integrate directly' });
+    }
+
+    brief.stack = stack;
+
+    // --- 5. Deliverables Checklist ---
+    const deliverables = [];
+    data.scope.forEach(s => {
+      if (s === 'Other') return;
+      const delMap = {
+        'Website / Landing Page': ['Live, deployed website/landing page', 'Mobile-responsive across all breakpoints', 'SEO configuration and analytics setup', 'Content populated and reviewed'],
+        'Automation / Workflow': ['Documented workflow with trigger/action map', 'Live automations tested end-to-end', 'Error handling and notification setup'],
+        'CRM Setup': ['Configured CRM with custom fields and pipeline', 'Data imported and deduplicated', 'Team accounts created with permissions'],
+        'Dashboard / Reporting': ['Live dashboard with agreed-upon KPIs', 'Data sources connected and validated', 'Export and sharing configured'],
+        'Lead Generation System': ['Lead capture form(s) live and tested', 'CRM integration receiving leads', 'Notification system for sales team', 'Attribution tracking active'],
+        'Email Marketing Setup': ['Email templates designed and tested', 'Automation sequences built and active', 'List segmentation configured', 'Deliverability verified (SPF/DKIM)'],
+        'Internal Tool / App': ['Deployed application with login', 'User roles and permissions configured', 'Documentation / training guide']
+      };
+      if (delMap[s]) deliverables.push({ scope: s, items: delMap[s] });
     });
+    if (data.scopeOther) {
+      deliverables.push({ scope: data.scopeOther, items: ['Deliverables to be defined during discovery'] });
+    }
+    brief.deliverables = deliverables;
 
-    // --- Translate involvement level ---
-    const involvementMap = {
-      'Review every step': {
-        technical: 'Iterative development with per-feature staging deployments and sign-off gates',
-        marketing: 'Collaborative build process with full client visibility at every milestone'
-      },
-      'Review major milestones': {
-        technical: 'Sprint-based delivery with demo checkpoints at phase boundaries',
-        marketing: 'Streamlined approval workflow — you review key deliverables, we handle the details'
-      },
-      'Minimal involvement': {
-        technical: 'Autonomous delivery with async status updates and final UAT review',
-        marketing: 'Done-for-you execution — hands-off until the finished product is ready for sign-off'
-      }
-    };
+    // --- 6. Complexity Assessment ---
+    let complexityScore = 0;
+    complexityScore += data.scope.length * 2;
+    if (data.scope.includes('Internal Tool / App')) complexityScore += 3;
+    if (data.scope.includes('Automation / Workflow')) complexityScore += 2;
+    if (data.scope.includes('CRM Setup')) complexityScore += 1;
+    if (data.flowSteps.length > 4) complexityScore += 2;
+    if (data.toolAccess) complexityScore += 1;
+    if (data.deadline) complexityScore += 1;
+    if (data.exclusions) complexityScore += 1;
 
-    const invMap = involvementMap[data.involvement] || {
-      technical: 'Collaboration model to be defined during kickoff',
-      marketing: 'Flexible engagement model tailored to your availability'
-    };
+    const reasons = [];
+    if (data.scope.length >= 4) reasons.push(data.scope.length + ' scope items means multiple workstreams');
+    if (data.scope.includes('Internal Tool / App')) reasons.push('Custom app development adds significant build time');
+    if (data.scope.includes('Automation / Workflow') && data.scope.length > 2) reasons.push('Automation across multiple systems requires integration testing');
+    if (data.flowSteps.length > 4) reasons.push('Multi-step user flow (' + data.flowSteps.length + ' steps) requires thorough QA');
+    if (data.deadline) reasons.push('Hard deadline (' + data.deadline + ') limits flexibility');
+    if (data.scope.length <= 2 && !data.scope.includes('Internal Tool / App')) reasons.push('Focused scope keeps this manageable');
+    if (data.involvement === 'Minimal involvement') reasons.push('Minimal client involvement speeds up execution');
+    if (data.involvement === 'Review every step') reasons.push('Step-by-step review adds feedback cycles to timeline');
 
-    sections.push({
-      title: 'Involvement Level',
-      clientSaid: data.involvement,
-      technical: invMap.technical,
-      marketing: invMap.marketing
-    });
+    let complexityLevel, complexityColor;
+    if (complexityScore <= 5) { complexityLevel = 'Low'; complexityColor = '#10b981'; }
+    else if (complexityScore <= 10) { complexityLevel = 'Medium'; complexityColor = '#f59e0b'; }
+    else { complexityLevel = 'High'; complexityColor = '#ef4444'; }
 
-    return sections;
+    brief.complexity = { level: complexityLevel, color: complexityColor, score: complexityScore, reasons: reasons };
+
+    // --- 7. Red Flags & Risks ---
+    const risks = [];
+    if (!data.websiteUrl && data.scope.includes('Website / Landing Page')) {
+      risks.push({ flag: 'No existing website', note: 'Building from scratch — confirm content, copy, and brand assets are ready or budget for content creation' });
+    }
+    if (!data.brandAssets && (data.scope.includes('Website / Landing Page') || data.scope.includes('Email Marketing Setup'))) {
+      risks.push({ flag: 'No brand assets provided', note: 'Need logo, colors, fonts before design can start — may delay kickoff' });
+    }
+    if (data.scope.length >= 4) {
+      risks.push({ flag: 'Large scope (' + data.scope.length + ' items)', note: 'Consider phasing delivery rather than building everything at once' });
+    }
+    if (data.deadline && data.scope.length >= 3) {
+      risks.push({ flag: 'Tight timeline vs. scope', note: '"' + data.deadline + '" with ' + data.scope.length + ' deliverables — may need to cut or phase' });
+    }
+    if (data.involvement === 'Review every step' && data.deadline) {
+      risks.push({ flag: 'High review cadence + deadline', note: 'Step-by-step reviews slow delivery — set SLAs for feedback turnaround' });
+    }
+    if (!data.toolAccess && (data.scope.includes('CRM Setup') || data.scope.includes('Automation / Workflow'))) {
+      risks.push({ flag: 'No tool access listed', note: 'Will need login credentials for CRM/automation platforms before build starts' });
+    }
+    if (!data.customerData && data.scope.includes('CRM Setup')) {
+      risks.push({ flag: 'No customer data mentioned', note: 'CRM is only useful with data — confirm import source and format' });
+    }
+    if (data.exclusions) {
+      risks.push({ flag: 'Exclusions noted', note: '"' + data.exclusions + '" — make sure team is aligned so this doesn\'t creep back in' });
+    }
+    if (risks.length === 0) {
+      risks.push({ flag: 'None detected', note: 'Straightforward brief — still worth confirming assumptions in kickoff' });
+    }
+
+    brief.risks = risks;
+
+    // --- 8. Discovery Questions ---
+    const questions = [];
+    if (data.scope.includes('Website / Landing Page') && !data.existingContent) {
+      questions.push('Who is writing the copy? Do you have approved messaging or do we need to create it?');
+    }
+    if (data.scope.includes('Lead Generation System')) {
+      questions.push('What qualifies a "good" lead? What makes one worth your time vs. not?');
+      questions.push('Where is traffic coming from? Paid ads, organic, referrals, social?');
+    }
+    if (data.scope.includes('Automation / Workflow')) {
+      questions.push('Walk me through the current manual process step by step — what exactly are you doing today?');
+    }
+    if (data.scope.includes('CRM Setup')) {
+      questions.push('How many contacts/deals are we importing? What format is the data in?');
+      questions.push('Who on your team will use the CRM daily, and what\'s their tech comfort level?');
+    }
+    if (data.scope.includes('Email Marketing Setup')) {
+      questions.push('Do you have an existing email list? How big, and when was it last engaged?');
+      questions.push('What\'s the first email someone should get after opting in?');
+    }
+    if (data.scope.includes('Dashboard / Reporting')) {
+      questions.push('What decisions will this dashboard help you make? What action follows the data?');
+    }
+    if (data.scope.includes('Internal Tool / App')) {
+      questions.push('How many users? What are the distinct roles and what can each role do?');
+      questions.push('Is there an existing spreadsheet/process this is replacing? Can we see it?');
+    }
+    if (data.deadline) {
+      questions.push('Is the deadline hard (event, launch) or soft (preference)? What happens if we miss it?');
+    }
+    if (!data.offerDetails && /lead|sales|revenue|convert/.test(all)) {
+      questions.push('What\'s the offer? What are you selling, at what price point, to whom?');
+    }
+    if (questions.length === 0) {
+      questions.push('What does your ideal first week after launch look like?');
+    }
+
+    brief.questions = questions;
+
+    // --- 9. Upsell / Phase 2 Opportunities ---
+    const upsells = [];
+    if (data.scope.includes('Website / Landing Page') && !data.scope.includes('Lead Generation System')) {
+      upsells.push({ idea: 'Lead Generation System', reason: 'You\'re building a page but not capturing leads — add forms, CTAs, and qualification logic' });
+    }
+    if (data.scope.includes('Lead Generation System') && !data.scope.includes('Email Marketing Setup')) {
+      upsells.push({ idea: 'Email Nurture Sequences', reason: 'Leads without follow-up go cold — automate email sequences to warm them up' });
+    }
+    if (data.scope.includes('Lead Generation System') && !data.scope.includes('Dashboard / Reporting')) {
+      upsells.push({ idea: 'Lead Attribution Dashboard', reason: 'Know which channels produce your best leads — UTM tracking + dashboard' });
+    }
+    if (data.scope.includes('CRM Setup') && !data.scope.includes('Automation / Workflow')) {
+      upsells.push({ idea: 'CRM Automation', reason: 'Automate deal stage updates, task creation, and follow-up reminders' });
+    }
+    if (data.scope.includes('Email Marketing Setup') && !data.scope.includes('Dashboard / Reporting')) {
+      upsells.push({ idea: 'Email Performance Dashboard', reason: 'Track open rates, CTR, revenue per send, and list health over time' });
+    }
+    if (!data.scope.includes('Automation / Workflow') && data.scope.length >= 2) {
+      upsells.push({ idea: 'Cross-System Automation', reason: 'Connect your ' + scopeNames.slice(0, 2).join(' and ') + ' so data flows automatically' });
+    }
+    if (data.scope.includes('Website / Landing Page') && !data.scope.includes('Internal Tool / App')) {
+      upsells.push({ idea: 'A/B Testing Setup', reason: 'Test headlines, CTAs, and layouts to continuously improve conversion rates' });
+    }
+
+    brief.upsells = upsells;
+
+    return brief;
   }
 
   // ---- Generate AI Prompt ----
@@ -678,30 +733,142 @@ Based on the above brief, create a detailed project plan with:
 
   function renderTranslation(data) {
     const el = document.getElementById('solutionTranslation');
-    const sections = generateTranslation(data);
+    const brief = generateTranslation(data);
+
     el.innerHTML = `
-      <div class="translation-intro">
-        <p><strong>What they said vs. what they actually need.</strong> Use this to scope the project, write proposals, and brief your team.</p>
+      <div class="brief-header">
+        <h3>Internal Project Brief</h3>
+        <p>What the client actually needs — in terms your team can execute on.</p>
       </div>
-      ${sections.map(s => `
-        <div class="translation-block">
-          <h4>${escapeHtml(s.title)}</h4>
-          <div class="translation-row">
-            <div class="translation-col client-col">
-              <span class="translation-tag">Client Said</span>
-              <p>${escapeHtml(s.clientSaid)}</p>
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#128203;</span>
+          <h4>Executive Summary</h4>
+        </div>
+        <p class="brief-summary-text">${escapeHtml(brief.executiveSummary)}</p>
+        <div class="brief-meta-row">
+          <span class="brief-badge" style="background:${brief.complexity.color}; color:#fff;">Complexity: ${brief.complexity.level}</span>
+          <span class="brief-badge brief-badge-outline">${data.scope.length} deliverable${data.scope.length > 1 ? 's' : ''}</span>
+          <span class="brief-badge brief-badge-outline">${data.involvement}</span>
+          ${data.deadline ? '<span class="brief-badge brief-badge-outline">Deadline: ' + escapeHtml(data.deadline) + '</span>' : ''}
+        </div>
+      </div>
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#128736;</span>
+          <h4>Technical Requirements</h4>
+        </div>
+        ${brief.techReqs.map(cat => `
+          <div class="brief-card">
+            <h5>${escapeHtml(cat.category)}</h5>
+            <ul>${cat.items.map(i => '<li>' + escapeHtml(i) + '</li>').join('')}</ul>
+          </div>
+        `).join('')}
+        ${brief.funcReqs.length > 0 ? `
+          <div class="brief-card brief-card-muted">
+            <h5>Client's Functional Description</h5>
+            ${brief.funcReqs.map(r => '<p>' + escapeHtml(r) + '</p>').join('')}
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#128640;</span>
+          <h4>Marketing Strategy Brief</h4>
+        </div>
+        <div class="brief-kv-grid">
+          ${brief.mktBrief.map(m => `
+            <div class="brief-kv">
+              <span class="brief-kv-label">${escapeHtml(m.label)}</span>
+              <span class="brief-kv-value">${escapeHtml(m.value)}</span>
             </div>
-            <div class="translation-col tech-col">
-              <span class="translation-tag">Technical Translation</span>
-              <p>${escapeHtml(s.technical).replace(/\n/g, '<br>')}</p>
-            </div>
-            <div class="translation-col mkt-col">
-              <span class="translation-tag">Marketing Translation</span>
-              <p>${escapeHtml(s.marketing).replace(/\n/g, '<br>')}</p>
-            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      ${brief.stack.length > 0 ? `
+        <div class="brief-section">
+          <div class="brief-section-head">
+            <span class="brief-icon">&#9881;</span>
+            <h4>Recommended Stack & Tools</h4>
+          </div>
+          <div class="brief-stack-grid">
+            ${brief.stack.map(s => `
+              <div class="brief-stack-item">
+                <strong>${escapeHtml(s.tool)}</strong>
+                <span>${escapeHtml(s.reason)}</span>
+              </div>
+            `).join('')}
           </div>
         </div>
-      `).join('')}
+      ` : ''}
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#9989;</span>
+          <h4>Deliverables Checklist</h4>
+        </div>
+        ${brief.deliverables.map(d => `
+          <div class="brief-card">
+            <h5>${escapeHtml(d.scope)}</h5>
+            <ul class="brief-checklist">${d.items.map(i => '<li>' + escapeHtml(i) + '</li>').join('')}</ul>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#128200;</span>
+          <h4>Complexity Assessment</h4>
+        </div>
+        <div class="brief-complexity">
+          <div class="brief-complexity-meter">
+            <div class="brief-complexity-bar" style="width:${Math.min(brief.complexity.score * 6, 100)}%; background:${brief.complexity.color};"></div>
+          </div>
+          <span class="brief-complexity-label" style="color:${brief.complexity.color};">${brief.complexity.level} (score: ${brief.complexity.score})</span>
+        </div>
+        <ul class="brief-reasons">${brief.complexity.reasons.map(r => '<li>' + escapeHtml(r) + '</li>').join('')}</ul>
+      </div>
+
+      <div class="brief-section brief-section-warn">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#9888;</span>
+          <h4>Red Flags & Risks</h4>
+        </div>
+        ${brief.risks.map(r => `
+          <div class="brief-risk">
+            <strong>${escapeHtml(r.flag)}</strong>
+            <p>${escapeHtml(r.note)}</p>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="brief-section">
+        <div class="brief-section-head">
+          <span class="brief-icon">&#10067;</span>
+          <h4>Discovery Questions</h4>
+          <span class="brief-head-note">Ask these in the kickoff call</span>
+        </div>
+        <ol class="brief-questions">${brief.questions.map(q => '<li>' + escapeHtml(q) + '</li>').join('')}</ol>
+      </div>
+
+      ${brief.upsells.length > 0 ? `
+        <div class="brief-section brief-section-upsell">
+          <div class="brief-section-head">
+            <span class="brief-icon">&#128161;</span>
+            <h4>Phase 2 / Upsell Opportunities</h4>
+          </div>
+          ${brief.upsells.map(u => `
+            <div class="brief-upsell-item">
+              <strong>${escapeHtml(u.idea)}</strong>
+              <p>${escapeHtml(u.reason)}</p>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
     `;
   }
 
@@ -730,10 +897,36 @@ Based on the above brief, create a detailed project plan with:
       p.title + '\n' + p.items.map(i => '  - ' + i).join('\n')
     ).join('\n\n');
 
-    const translationSections = generateTranslation(data);
-    const translationText = translationSections.map(s =>
-      s.title + '\n  Client Said: ' + s.clientSaid + '\n  Technical: ' + s.technical + '\n  Marketing: ' + s.marketing
-    ).join('\n\n');
+    const brief = generateTranslation(data);
+    const translationText = [
+      'EXECUTIVE SUMMARY',
+      brief.executiveSummary,
+      'Complexity: ' + brief.complexity.level + ' (score: ' + brief.complexity.score + ')',
+      '',
+      'TECHNICAL REQUIREMENTS',
+      ...brief.techReqs.map(c => c.category + ':\n' + c.items.map(i => '  - ' + i).join('\n')),
+      '',
+      'MARKETING STRATEGY',
+      ...brief.mktBrief.map(m => '  ' + m.label + ': ' + m.value),
+      '',
+      'RECOMMENDED STACK',
+      ...brief.stack.map(s => '  ' + s.tool + ' — ' + s.reason),
+      '',
+      'DELIVERABLES',
+      ...brief.deliverables.map(d => d.scope + ':\n' + d.items.map(i => '  [ ] ' + i).join('\n')),
+      '',
+      'COMPLEXITY FACTORS',
+      ...brief.complexity.reasons.map(r => '  - ' + r),
+      '',
+      'RED FLAGS & RISKS',
+      ...brief.risks.map(r => '  ! ' + r.flag + ': ' + r.note),
+      '',
+      'DISCOVERY QUESTIONS',
+      ...brief.questions.map((q, i) => '  ' + (i + 1) + '. ' + q),
+      '',
+      'PHASE 2 / UPSELL OPPORTUNITIES',
+      ...brief.upsells.map(u => '  + ' + u.idea + ': ' + u.reason),
+    ].join('\n');
 
     const text = `PROJECT START FORM - SUBMISSION SUMMARY
 ========================================
