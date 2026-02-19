@@ -7,7 +7,7 @@
 
   // ---- Configuration ----
   // Replace with your Formspree form ID (create one at https://formspree.io)
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkovvjjw';
 
   // ---- DOM References ----
   const form = document.getElementById('projectForm');
