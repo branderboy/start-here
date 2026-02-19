@@ -240,6 +240,257 @@
     return res.ok;
   }
 
+  // ---- Generate Translation (Technical & Marketing Terms) ----
+  function generateTranslation(data) {
+    const sections = [];
+
+    // --- Translate the project objective ---
+    const objective = data.oneSentence.toLowerCase();
+    const techGoals = [];
+    const marketingGoals = [];
+
+    // Keyword-based mapping for objectives
+    if (/lead|capture|convert|visitor|form/.test(objective)) {
+      techGoals.push('Conversion-optimized lead capture funnel with form validation and CRM integration');
+      marketingGoals.push('Top-of-funnel acquisition asset with lead magnet and nurture sequence');
+    }
+    if (/automat|workflow|trigger|sequence/.test(objective)) {
+      techGoals.push('Event-driven automation pipeline with conditional branching and webhook triggers');
+      marketingGoals.push('Lifecycle marketing automation with behavioral triggers and drip campaigns');
+    }
+    if (/dashboard|report|metric|analytic|track/.test(objective)) {
+      techGoals.push('Real-time data visualization layer with aggregation queries and KPI widgets');
+      marketingGoals.push('Performance reporting dashboard with attribution modeling and ROI tracking');
+    }
+    if (/website|landing|page|site/.test(objective)) {
+      techGoals.push('Responsive, SEO-optimized web application with server-side rendering');
+      marketingGoals.push('High-converting landing experience with A/B test-ready layout and CTA strategy');
+    }
+    if (/email|newsletter|campaign|drip/.test(objective)) {
+      techGoals.push('Transactional and marketing email system with template engine and send scheduling');
+      marketingGoals.push('Email marketing program with segmentation, personalization, and engagement scoring');
+    }
+    if (/crm|pipeline|sales|deal/.test(objective)) {
+      techGoals.push('CRM data model with pipeline stages, contact records, and activity logging');
+      marketingGoals.push('Sales enablement platform with lead scoring and pipeline velocity optimization');
+    }
+    if (/app|tool|internal|system/.test(objective)) {
+      techGoals.push('Custom web application with role-based access control and CRUD operations');
+      marketingGoals.push('Internal productivity tool to streamline operations and reduce manual overhead');
+    }
+    if (/booking|schedule|call|appointment/.test(objective)) {
+      techGoals.push('Calendar integration with availability sync, booking API, and confirmation webhooks');
+      marketingGoals.push('Appointment funnel with friction-reduction UX and automated follow-up');
+    }
+    if (techGoals.length === 0) {
+      techGoals.push('Custom digital solution with API integrations and data persistence');
+      marketingGoals.push('Strategic digital asset aligned with business growth objectives');
+    }
+
+    sections.push({
+      title: 'Project Objective',
+      clientSaid: data.oneSentence,
+      technical: techGoals.join('. '),
+      marketing: marketingGoals.join('. ')
+    });
+
+    // --- Translate the problem statement ---
+    const problem = data.problem.toLowerCase();
+    const techProblem = [];
+    const mktProblem = [];
+
+    if (/manual|time|slow|tedious|repetitive/.test(problem)) {
+      techProblem.push('Manual processes lacking automation, causing operational bottlenecks');
+      mktProblem.push('Revenue leakage from inefficient workflows and delayed response times');
+    }
+    if (/lead|miss|losing|follow.?up|no.?system/.test(problem)) {
+      techProblem.push('No structured data pipeline for lead intake, routing, and status tracking');
+      mktProblem.push('Broken acquisition funnel with high drop-off and no attribution visibility');
+    }
+    if (/data|track|measure|report|insight|visib/.test(problem)) {
+      techProblem.push('Fragmented data sources with no unified query layer or reporting interface');
+      mktProblem.push('Lack of actionable performance insights, preventing data-driven optimization');
+    }
+    if (/design|look|brand|outdated|ugly|trust/.test(problem)) {
+      techProblem.push('Front-end UI/UX does not meet modern responsive design standards');
+      mktProblem.push('Brand perception gap eroding trust and lowering conversion rates');
+    }
+    if (/scale|grow|volume|capacity/.test(problem)) {
+      techProblem.push('Current architecture has scalability constraints under increased load');
+      mktProblem.push('Growth ceiling caused by infrastructure that can\'t support demand');
+    }
+    if (techProblem.length === 0) {
+      techProblem.push('Existing systems do not meet current operational requirements');
+      mktProblem.push('Business performance constrained by tooling gaps');
+    }
+
+    sections.push({
+      title: 'Problem Statement',
+      clientSaid: data.problem,
+      technical: techProblem.join('. '),
+      marketing: mktProblem.join('. ')
+    });
+
+    // --- Translate success criteria ---
+    const success = data.success.toLowerCase();
+    const techSuccess = [];
+    const mktSuccess = [];
+
+    if (/lead|qualified|booked|call|demo/.test(success)) {
+      techSuccess.push('Measurable lead conversion rate with form-to-CRM pipeline completion');
+      mktSuccess.push('Qualified lead volume target with cost-per-acquisition benchmarks');
+    }
+    if (/automat|save time|hands.?off|run itself/.test(success)) {
+      techSuccess.push('Zero-touch execution of defined workflows with error handling and logging');
+      mktSuccess.push('Operational efficiency gains measured in hours saved per week');
+    }
+    if (/revenue|sales|roi|money|profit/.test(success)) {
+      techSuccess.push('Conversion tracking with revenue attribution across touchpoints');
+      mktSuccess.push('Positive ROI with measurable revenue lift tied to campaign performance');
+    }
+    if (/email|open|click|engag|subscriber/.test(success)) {
+      techSuccess.push('Email delivery and engagement metrics (open rate, CTR, bounce rate)');
+      mktSuccess.push('Email program KPIs: list growth, engagement rate, and revenue per send');
+    }
+    if (techSuccess.length === 0) {
+      techSuccess.push('Defined acceptance criteria met with measurable performance benchmarks');
+      mktSuccess.push('Clear business outcomes with trackable success metrics');
+    }
+
+    sections.push({
+      title: 'Success Criteria',
+      clientSaid: data.success,
+      technical: techSuccess.join('. '),
+      marketing: mktSuccess.join('. ')
+    });
+
+    // --- Translate scope items ---
+    const scopeMap = {
+      'Website / Landing Page': {
+        technical: 'Responsive front-end application (HTML/CSS/JS or framework-based) with SEO metadata, structured data, and performance optimization (Core Web Vitals)',
+        marketing: 'Conversion-focused landing experience with persuasive copy hierarchy, social proof placement, and CTA optimization'
+      },
+      'Automation / Workflow': {
+        technical: 'Event-driven automation engine with conditional logic, API integrations, webhook listeners, and error retry mechanisms',
+        marketing: 'Marketing and sales automation reducing manual touchpoints and accelerating speed-to-lead'
+      },
+      'CRM Setup': {
+        technical: 'Relational data model with contact/company/deal entities, custom fields, pipeline stages, and API sync',
+        marketing: 'Customer relationship management platform enabling segmentation, lead scoring, and lifecycle tracking'
+      },
+      'Dashboard / Reporting': {
+        technical: 'Data visualization layer with aggregation queries, chart rendering, date-range filtering, and export capabilities',
+        marketing: 'Executive-level performance dashboard with KPIs, trend analysis, and ROI attribution'
+      },
+      'Lead Generation System': {
+        technical: 'Multi-step form with progressive profiling, spam filtering, validation, and CRM/notification integration',
+        marketing: 'Full-funnel lead gen engine: traffic capture, qualification, nurture sequence, and sales handoff'
+      },
+      'Email Marketing Setup': {
+        technical: 'Email service provider integration with template system, list management, segmentation rules, and send scheduling',
+        marketing: 'Email marketing program with welcome series, re-engagement campaigns, and revenue-per-subscriber optimization'
+      },
+      'Internal Tool / App': {
+        technical: 'Custom CRUD application with authentication, role-based access control, and database persistence',
+        marketing: 'Internal productivity tool reducing operational friction and enabling team-wide efficiency gains'
+      }
+    };
+
+    const scopeTech = [];
+    const scopeMkt = [];
+    data.scope.forEach(s => {
+      if (scopeMap[s]) {
+        scopeTech.push(s + ': ' + scopeMap[s].technical);
+        scopeMkt.push(s + ': ' + scopeMap[s].marketing);
+      }
+    });
+    if (data.scopeOther) {
+      scopeTech.push(data.scopeOther + ': Custom implementation per requirements');
+      scopeMkt.push(data.scopeOther + ': Tailored solution addressing specific business need');
+    }
+
+    sections.push({
+      title: 'Scope of Work',
+      clientSaid: data.scope.join(', ') + (data.scopeOther ? ', ' + data.scopeOther : ''),
+      technical: scopeTech.join('\n'),
+      marketing: scopeMkt.join('\n')
+    });
+
+    // --- Translate priorities ---
+    const prioMap = {
+      'Speed': {
+        technical: 'Optimized load times (sub-2s TTFB), lazy loading, CDN delivery, and rapid deployment pipeline',
+        marketing: 'Fast time-to-market with agile delivery sprints and accelerated launch timeline'
+      },
+      'Clean Design': {
+        technical: 'Component-based UI architecture with design system tokens, accessibility (WCAG 2.1), and responsive breakpoints',
+        marketing: 'Premium brand experience with modern aesthetics that builds trust and drives engagement'
+      },
+      'Automation Efficiency': {
+        technical: 'Optimized workflow execution with minimal latency, parallel processing, and idempotent operations',
+        marketing: 'Maximum operational leverage — do more with less through intelligent automation'
+      },
+      'Scalability': {
+        technical: 'Horizontally scalable architecture with stateless services, caching layers, and load balancing',
+        marketing: 'Growth-ready infrastructure that scales with demand without rebuilding from scratch'
+      },
+      'Lead Quality': {
+        technical: 'Multi-field qualification logic, lead scoring algorithms, and spam/bot filtering',
+        marketing: 'Higher-intent pipeline with qualification gates that filter out tire-kickers before sales engagement'
+      }
+    };
+
+    const prioTech = [];
+    const prioMkt = [];
+    data.priority.forEach(p => {
+      if (prioMap[p]) {
+        prioTech.push(p + ': ' + prioMap[p].technical);
+        prioMkt.push(p + ': ' + prioMap[p].marketing);
+      }
+    });
+    if (data.priorityOther) {
+      prioTech.push(data.priorityOther + ': Custom priority — will define technical spec during discovery');
+      prioMkt.push(data.priorityOther + ': Strategic priority aligned to core business KPIs');
+    }
+
+    sections.push({
+      title: 'Priorities',
+      clientSaid: data.priority.join(', ') + (data.priorityOther ? ', ' + data.priorityOther : ''),
+      technical: prioTech.join('\n'),
+      marketing: prioMkt.join('\n')
+    });
+
+    // --- Translate involvement level ---
+    const involvementMap = {
+      'Review every step': {
+        technical: 'Iterative development with per-feature staging deployments and sign-off gates',
+        marketing: 'Collaborative build process with full client visibility at every milestone'
+      },
+      'Review major milestones': {
+        technical: 'Sprint-based delivery with demo checkpoints at phase boundaries',
+        marketing: 'Streamlined approval workflow — you review key deliverables, we handle the details'
+      },
+      'Minimal involvement': {
+        technical: 'Autonomous delivery with async status updates and final UAT review',
+        marketing: 'Done-for-you execution — hands-off until the finished product is ready for sign-off'
+      }
+    };
+
+    const invMap = involvementMap[data.involvement] || {
+      technical: 'Collaboration model to be defined during kickoff',
+      marketing: 'Flexible engagement model tailored to your availability'
+    };
+
+    sections.push({
+      title: 'Involvement Level',
+      clientSaid: data.involvement,
+      technical: invMap.technical,
+      marketing: invMap.marketing
+    });
+
+    return sections;
+  }
+
   // ---- Generate AI Prompt ----
   function generatePrompt(data) {
     const scopeList = data.scope.map(s => `- ${s}`).join('\n');
@@ -425,6 +676,35 @@ Based on the above brief, create a detailed project plan with:
     el.textContent = generatePrompt(data);
   }
 
+  function renderTranslation(data) {
+    const el = document.getElementById('solutionTranslation');
+    const sections = generateTranslation(data);
+    el.innerHTML = `
+      <div class="translation-intro">
+        <p><strong>What they said vs. what they actually need.</strong> Use this to scope the project, write proposals, and brief your team.</p>
+      </div>
+      ${sections.map(s => `
+        <div class="translation-block">
+          <h4>${escapeHtml(s.title)}</h4>
+          <div class="translation-row">
+            <div class="translation-col client-col">
+              <span class="translation-tag">Client Said</span>
+              <p>${escapeHtml(s.clientSaid)}</p>
+            </div>
+            <div class="translation-col tech-col">
+              <span class="translation-tag">Technical Translation</span>
+              <p>${escapeHtml(s.technical).replace(/\n/g, '<br>')}</p>
+            </div>
+            <div class="translation-col mkt-col">
+              <span class="translation-tag">Marketing Translation</span>
+              <p>${escapeHtml(s.marketing).replace(/\n/g, '<br>')}</p>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    `;
+  }
+
   function renderSolution(data) {
     const el = document.getElementById('solutionBlueprint');
     const phases = generateSolution(data);
@@ -448,6 +728,11 @@ Based on the above brief, create a detailed project plan with:
     const phases = generateSolution(data);
     const phasesText = phases.map(p =>
       p.title + '\n' + p.items.map(i => '  - ' + i).join('\n')
+    ).join('\n\n');
+
+    const translationSections = generateTranslation(data);
+    const translationText = translationSections.map(s =>
+      s.title + '\n  Client Said: ' + s.clientSaid + '\n  Technical: ' + s.technical + '\n  Marketing: ' + s.marketing
     ).join('\n\n');
 
     const text = `PROJECT START FORM - SUBMISSION SUMMARY
@@ -493,6 +778,11 @@ Priorities: ${data.priority.join(', ')}${data.priorityOther ? ', ' + data.priori
 Involvement: ${data.involvement}
 Notes: ${data.finalNotes || 'None'}
 Signature: ${data.signature}
+
+========================================
+TRANSLATION (Technical & Marketing)
+========================================
+${translationText}
 
 ========================================
 AI PROMPT
@@ -552,6 +842,7 @@ ${phasesText}
 
       // Render results regardless
       renderSummary(data);
+      renderTranslation(data);
       renderPrompt(data);
       renderSolution(data);
 

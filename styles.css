@@ -602,6 +602,104 @@ textarea {
   background: var(--primary-dark);
 }
 
+/* ===== Translation Tab ===== */
+.translation-intro {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #fffbeb;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--accent);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.translation-intro p {
+  margin: 0;
+}
+
+.translation-block {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.translation-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.translation-block h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.translation-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.translation-col {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.translation-col p {
+  margin: 0;
+}
+
+.client-col {
+  background: #f1f5f9;
+  border-left: 3px solid var(--text-muted);
+}
+
+.tech-col {
+  background: #eff6ff;
+  border-left: 3px solid var(--primary);
+}
+
+.mkt-col {
+  background: #fefce8;
+  border-left: 3px solid var(--accent);
+}
+
+.translation-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.client-col .translation-tag {
+  background: var(--text-muted);
+  color: white;
+}
+
+.tech-col .translation-tag {
+  background: var(--primary);
+  color: white;
+}
+
+.mkt-col .translation-tag {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .translation-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ===== Solution Blueprint ===== */
 .blueprint-phase {
   margin-bottom: 24px;
