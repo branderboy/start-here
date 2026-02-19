@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Starter Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="form-header">
+      <h1>Project Start Form</h1>
+      <p class="subtitle">Tell us about your project so we can build exactly what you need.</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="step-indicators" id="stepIndicators"></div>
+    </header>
+
+    <form id="projectForm" novalidate>
+      <!-- Section 1: Contact Information -->
+      <section class="form-section active" data-step="1">
+        <div class="section-header">
+          <span class="section-number">1</span>
+          <div>
+            <h2>Contact Information</h2>
+            <p>How can we reach you?</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="companyName">Company Name <span class="required">*</span></label>
+            <input type="text" id="companyName" name="companyName" required placeholder="Acme Inc.">
+          </div>
+          <div class="form-group">
+            <label for="contactName">Primary Contact Name <span class="required">*</span></label>
+            <input type="text" id="contactName" name="contactName" required placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="jane@acme.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+          <div class="form-group full-width">
+            <label for="bestContact">Best Way to Reach You</label>
+            <select id="bestContact" name="bestContact">
+              <option value="">Select one...</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone Call</option>
+              <option value="text">Text Message</option>
+              <option value="slack">Slack / Teams</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: What Are We Building? -->
+      <section class="form-section" data-step="2">
+        <div class="section-header">
+          <span class="section-number">2</span>
+          <div>
+            <h2>What Are We Building?</h2>
+            <p>Help us understand your vision.</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="form-group">
+            <label for="oneSentence">In one sentence, what do you want this project to accomplish? <span class="required">*</span></label>
+            <input type="text" id="oneSentence" name="oneSentence" required placeholder="e.g., Build a lead capture system that converts visitors into booked calls">
+          </div>
+          <div class="form-group">
+            <label for="problem">What problem are you trying to solve? <span class="required">*</span></label>
+            <textarea id="problem" name="problem" rows="3" required placeholder="Describe the pain point or gap you're experiencing..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="success">What does success look like in simple terms? <span class="required">*</span></label>
+            <textarea id="success" name="success" rows="3" required placeholder='e.g., "Generate 20 qualified leads per month" or "Automate onboarding emails"'></textarea>
+          </div>
+          <div class="form-group">
+            <label for="deadline">Do you have a deadline? If yes, what is driving it?</label>
+            <input type="text" id="deadline" name="deadline" placeholder="e.g., Product launch on March 15th">
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Scope of Work -->
+      <section class="form-section" data-step="3">
+        <div class="section-header">
+          <span class="section-number">3</span>
+          <div>
+            <h2>Scope of Work</h2>
+            <p>What do you need built?</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="form-group">
+            <label>Select all that apply <span class="required">*</span></label>
+            <div class="checkbox-grid">
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Website / Landing Page">
+                <span class="checkbox-icon">&#127760;</span>
+                <span class="checkbox-label">Website / Landing Page</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Automation / Workflow">
+                <span class="checkbox-icon">&#9889;</span>
+                <span class="checkbox-label">Automation / Workflow</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="CRM Setup">
+                <span class="checkbox-icon">&#128202;</span>
+                <span class="checkbox-label">CRM Setup</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Dashboard / Reporting">
+                <span class="checkbox-icon">&#128200;</span>
+                <span class="checkbox-label">Dashboard / Reporting</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Lead Generation System">
+                <span class="checkbox-icon">&#127919;</span>
+                <span class="checkbox-label">Lead Generation System</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Email Marketing Setup">
+                <span class="checkbox-icon">&#128231;</span>
+                <span class="checkbox-label">Email Marketing Setup</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Internal Tool / App">
+                <span class="checkbox-icon">&#128736;</span>
+                <span class="checkbox-label">Internal Tool / App</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="scope" value="Other">
+                <span class="checkbox-icon">&#10133;</span>
+                <span class="checkbox-label">Other</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="scopeOtherGroup" style="display:none;">
+            <label for="scopeOther">Please specify:</label>
+            <input type="text" id="scopeOther" name="scopeOther" placeholder="What else do you need?">
+          </div>
+          <div class="form-group">
+            <label for="scopeDescription">Briefly describe what you expect it to do <span class="required">*</span></label>
+            <textarea id="scopeDescription" name="scopeDescription" rows="4" required placeholder="Walk us through what the finished product should do..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exclusions">Is there anything you specifically do NOT want included?</label>
+            <textarea id="exclusions" name="exclusions" rows="2" placeholder="e.g., No chatbot, no social media integration..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Source Materials -->
+      <section class="form-section" data-step="4">
+        <div class="section-header">
+          <span class="section-number">4</span>
+          <div>
+            <h2>Source Materials</h2>
+            <p>What existing materials can we use?</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="form-group">
+            <label for="websiteUrl">Website URL (if any)</label>
+            <input type="url" id="websiteUrl" name="websiteUrl" placeholder="https://yoursite.com">
+          </div>
+          <div class="form-group">
+            <label for="existingContent">Existing content (Google Docs, PDFs, etc.)</label>
+            <textarea id="existingContent" name="existingContent" rows="2" placeholder="Links or descriptions of available docs..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="brandAssets">Brand assets (logo, colors, fonts)</label>
+            <textarea id="brandAssets" name="brandAssets" rows="2" placeholder="Link to brand kit, or describe your brand colors and fonts..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="mediaAssets">Images or videos</label>
+            <textarea id="mediaAssets" name="mediaAssets" rows="2" placeholder="Links to image/video folders or describe what you have..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="customerData">Customer data (CSV, CRM export, etc.)</label>
+            <textarea id="customerData" name="customerData" rows="2" placeholder="Describe any customer data you can share..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="offerDetails">Offer details / pricing sheets</label>
+            <textarea id="offerDetails" name="offerDetails" rows="2" placeholder="Link or describe your offers and pricing..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pastMarketing">Past marketing materials</label>
+            <textarea id="pastMarketing" name="pastMarketing" rows="2" placeholder="Links to past ads, brochures, campaigns..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseStudies">Case studies / testimonials</label>
+            <textarea id="caseStudies" name="caseStudies" rows="2" placeholder="Links or descriptions of success stories..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="toolAccess">Access to tools or platforms we must connect to</label>
+            <textarea id="toolAccess" name="toolAccess" rows="2" placeholder="e.g., Stripe, Mailchimp, HubSpot, Zapier..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="folderLink">Folder link for large files</label>
+            <input type="url" id="folderLink" name="folderLink" placeholder="https://drive.google.com/...">
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: User Flow -->
+      <section class="form-section" data-step="5">
+        <div class="section-header">
+          <span class="section-number">5</span>
+          <div>
+            <h2>User Flow</h2>
+            <p>How should it work, step by step?</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="flow-hint">
+            <p><strong>Example:</strong> Visitor fills out form &rarr; receives confirmation &rarr; sales team notified &rarr; follow-up scheduled</p>
+          </div>
+          <div id="flowSteps">
+            <div class="flow-step">
+              <span class="step-badge">1</span>
+              <div class="form-group" style="flex:1;">
+                <label for="flowStep1">What happens first? <span class="required">*</span></label>
+                <input type="text" id="flowStep1" name="flowStep1" required placeholder="e.g., Visitor lands on the page">
+              </div>
+            </div>
+            <div class="flow-step">
+              <span class="step-badge">2</span>
+              <div class="form-group" style="flex:1;">
+                <label for="flowStep2">What happens next?</label>
+                <input type="text" id="flowStep2" name="flowStep2" placeholder="e.g., They fill out a form">
+              </div>
+            </div>
+            <div class="flow-step">
+              <span class="step-badge">3</span>
+              <div class="form-group" style="flex:1;">
+                <label for="flowStep3">What happens after that?</label>
+                <input type="text" id="flowStep3" name="flowStep3" placeholder="e.g., Sales team gets notified">
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-add-step" id="addStepBtn">+ Add Another Step</button>
+        </div>
+      </section>
+
+      <!-- Section 6: Expectations -->
+      <section class="form-section" data-step="6">
+        <div class="section-header">
+          <span class="section-number">6</span>
+          <div>
+            <h2>Expectations</h2>
+            <p>What matters most to you?</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="form-group">
+            <label>What is most important for this project? <span class="required">*</span></label>
+            <div class="checkbox-grid priorities">
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Speed">
+                <span class="checkbox-icon">&#128640;</span>
+                <span class="checkbox-label">Speed</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Clean Design">
+                <span class="checkbox-icon">&#127912;</span>
+                <span class="checkbox-label">Clean Design</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Automation Efficiency">
+                <span class="checkbox-icon">&#9881;</span>
+                <span class="checkbox-label">Automation Efficiency</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Scalability">
+                <span class="checkbox-icon">&#128200;</span>
+                <span class="checkbox-label">Scalability</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Lead Quality">
+                <span class="checkbox-icon">&#127919;</span>
+                <span class="checkbox-label">Lead Quality</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" name="priority" value="Other">
+                <span class="checkbox-icon">&#10133;</span>
+                <span class="checkbox-label">Other</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="priorityOtherGroup" style="display:none;">
+            <label for="priorityOther">Please specify:</label>
+            <input type="text" id="priorityOther" name="priorityOther" placeholder="What matters most?">
+          </div>
+          <div class="form-group">
+            <label>How involved do you want to be? <span class="required">*</span></label>
+            <div class="radio-group">
+              <label class="radio-card">
+                <input type="radio" name="involvement" value="Review every step" required>
+                <div class="radio-content">
+                  <strong>Review Every Step</strong>
+                  <span>You want to approve each piece as we go</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="involvement" value="Review major milestones">
+                <div class="radio-content">
+                  <strong>Review Major Milestones</strong>
+                  <span>Check in at key phases only</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="involvement" value="Minimal involvement">
+                <div class="radio-content">
+                  <strong>Minimal Involvement</strong>
+                  <span>Trust us to handle it and deliver</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Final Notes -->
+      <section class="form-section" data-step="7">
+        <div class="section-header">
+          <span class="section-number">7</span>
+          <div>
+            <h2>Final Notes</h2>
+            <p>Anything else before we start?</p>
+          </div>
+        </div>
+        <div class="form-stack">
+          <div class="form-group">
+            <label for="finalNotes">Anything else we should know before starting?</label>
+            <textarea id="finalNotes" name="finalNotes" rows="4" placeholder="Budget constraints, past experiences, special requirements..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="signature">Signature <span class="required">*</span></label>
+            <input type="text" id="signature" name="signature" required placeholder="Type your full name">
+          </div>
+          <div class="form-group">
+            <label for="signDate">Date</label>
+            <input type="date" id="signDate" name="signDate">
+          </div>
+          <div class="consent-box">
+            <label class="consent-label">
+              <input type="checkbox" id="consent" name="consent" required>
+              <span>By submitting this form, I confirm that the information above reflects my current goals for this project.</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <div class="form-nav">
+        <button type="button" class="btn btn-back" id="backBtn" disabled>Back</button>
+        <div class="nav-right">
+          <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+          <button type="submit" class="btn btn-submit" id="submitBtn" style="display:none;">Submit Project</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Success / Summary Screen -->
+    <div id="successScreen" class="success-screen" style="display:none;">
+      <div class="success-icon">&#10003;</div>
+      <h2>Project Submitted Successfully!</h2>
+      <p>We've received your project details and will be in touch soon.</p>
+
+      <div class="summary-tabs">
+        <button class="tab-btn active" data-tab="summary">Summary</button>
+        <button class="tab-btn" data-tab="prompt">AI Prompt</button>
+        <button class="tab-btn" data-tab="solution">Solution Blueprint</button>
+      </div>
+
+      <div class="tab-content active" id="tab-summary">
+        <div id="projectSummary"></div>
+      </div>
+      <div class="tab-content" id="tab-prompt">
+        <div class="prompt-box" id="generatedPrompt"></div>
+        <button class="btn btn-copy" id="copyPromptBtn">Copy Prompt</button>
+      </div>
+      <div class="tab-content" id="tab-solution">
+        <div id="solutionBlueprint"></div>
+      </div>
+
+      <div class="success-actions">
+        <button class="btn btn-download" id="downloadBtn">Download Summary (PDF)</button>
+        <button class="btn btn-new" id="newFormBtn">Start New Project</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
