@@ -205,7 +205,7 @@
       'Phone': data.phone,
       'Best Contact Method': data.bestContact,
       'Project Goal': data.oneSentence,
-      'Problem': data.problem,
+      'Goal': data.problem,
       'Success Criteria': data.success,
       'Deadline': data.deadline,
       'Scope': data.scope.join(', '),
@@ -254,7 +254,7 @@
     } else {
       summaryParts.push('custom solution');
     }
-    summaryParts.push('that solves: "' + data.problem.split(/[.!?\n]/)[0].trim() + '"');
+    summaryParts.push('to achieve: "' + data.problem.split(/[.!?\n]/)[0].trim() + '"');
     if (data.deadline) {
       summaryParts.push('— deadline-driven (' + data.deadline + ')');
     }
@@ -352,10 +352,10 @@
       mktBrief.push({ label: 'Conversion Goal', value: 'Appointment setting — reduce friction from interest to booked call' });
     }
 
-    // Audience / positioning from problem
+    // Audience / positioning from goal
     if (data.problem) {
-      const painPoint = data.problem.split(/[.!?\n]/)[0].trim();
-      mktBrief.push({ label: 'Client Pain Point', value: '"' + painPoint + '" — use this as the anchor for all messaging' });
+      const goalStatement = data.problem.split(/[.!?\n]/)[0].trim();
+      mktBrief.push({ label: 'Client Goal', value: '"' + goalStatement + '" — use this as the anchor for all messaging' });
     }
     if (data.success) {
       const winState = data.success.split(/[.!?\n]/)[0].trim();
@@ -561,7 +561,7 @@ CLIENT OVERVIEW:
 PROJECT OBJECTIVE:
 ${data.oneSentence}
 
-PROBLEM STATEMENT:
+WHAT THEY WANT TO ACCOMPLISH:
 ${data.problem}
 
 SUCCESS CRITERIA:
@@ -697,7 +697,7 @@ Based on the above brief, create a detailed project plan with:
       <div class="summary-section">
         <h3>Project Overview</h3>
         ${row('Objective', data.oneSentence)}
-        ${row('Problem', data.problem)}
+        ${row('Goal', data.problem)}
         ${row('Success Criteria', data.success)}
         ${row('Deadline', data.deadline)}
       </div>
@@ -938,7 +938,7 @@ Contact: ${data.contactName} (${data.email})
 PROJECT OVERVIEW
 ----------------------------------------
 Objective: ${data.oneSentence}
-Problem: ${data.problem}
+Goal: ${data.problem}
 Success: ${data.success}
 Deadline: ${data.deadline || 'Flexible'}
 
