@@ -130,8 +130,8 @@
       }
     });
 
-    // Special: at least one scope checkbox on step 3
-    if (stepIndex === 2) {
+    // Special: at least one scope checkbox on step 2
+    if (stepIndex === 1) {
       const scopeChecked = section.querySelectorAll('input[name="scope"]:checked');
       if (scopeChecked.length === 0) {
         valid = false;
@@ -141,8 +141,8 @@
       }
     }
 
-    // Special: at least one priority checkbox on step 6
-    if (stepIndex === 5) {
+    // Special: at least one priority checkbox on step 5
+    if (stepIndex === 4) {
       const prioChecked = section.querySelectorAll('input[name="priority"]:checked');
       if (prioChecked.length === 0) {
         valid = false;
